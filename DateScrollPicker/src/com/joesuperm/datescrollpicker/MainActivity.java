@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         
         //对话框默认显示的日期
         Calendar calendarSelect = Calendar.getInstance();
-        calendarSelect.add(Calendar.DAY_OF_MONTH, 10);
+        calendarSelect.add(Calendar.DAY_OF_MONTH, 6);
         //对话框可选择的最小日期
         Calendar calendarMin = Calendar.getInstance();
         calendarMin.add(Calendar.DAY_OF_MONTH, 5);

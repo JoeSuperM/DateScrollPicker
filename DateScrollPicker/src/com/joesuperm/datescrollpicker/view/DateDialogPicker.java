@@ -147,6 +147,10 @@ public class DateDialogPicker extends Dialog implements android.view.View.OnClic
         }
         mWvDate.setItems(mDateList);
         setListener();
+        if (mSourceCalendar.get(Calendar.MONTH) == mMinCalendar.get(Calendar.MONTH)  && mSourceCalendar.get(Calendar.DAY_OF_MONTH) == mMinCalendar.get(Calendar.DAY_OF_MONTH)) {
+            System.out.println("============");
+            handleDateSelect(mDateList.get(0));
+        }
         restoreSelectDate(mSourceCalendar);
     }
     
@@ -222,39 +226,7 @@ public class DateDialogPicker extends Dialog implements android.view.View.OnClic
             
             @Override
             public void onSelected(int selectedIndex, String item) {
-                // 8月20日 星期几
-                int mounthIndex = item.indexOf("月");
-                int dateIndex = item.indexOf("日");
-                int realMouth = Integer.valueOf(item.substring(0, mounthIndex));
-                int realDate = Integer.valueOf(item.substring(mounthIndex + 1, dateIndex));
-                if (mCurCalendar.get(Calendar.MONTH) > realMouth) {
-                    mDstCalendar.add(Calendar.YEAR, 1);
-                }
-                mDstCalendar.set(Calendar.MONTH, realMouth - 1);
-                mDstCalendar.set(Calendar.DAY_OF_MONTH, realDate);
-                if (realMouth == mMinCalendar.get(Calendar.MONTH) + 1 && realDate == mMinCalendar.get(Calendar.DAY_OF_MONTH)) {
-                    initHourDate(mMinCalendar.get(Calendar.HOUR_OF_DAY));
-                    if (mDstCalendar.get(Calendar.HOUR_OF_DAY) > mMinCalendar.get(Calendar.HOUR_OF_DAY)) {
-                        initMinuteDate(0);
-                    }
-                    else {
-                        initMinuteDate(mMinCalendar.get(Calendar.MINUTE));
-                    }
-                    restoreSelectDate(mDstCalendar);
-                    mIsNeedInitAll = true;
-                    mIsCurMinDate = true;
-                }
-                else {
-                    mIsCurMinDate = false;
-                    if (mIsNeedInitAll) {
-                        // 初始化时间
-                        initHourDate(0);
-                        // 初始化分钟
-                        initMinuteDate(0);
-                        restoreSelectDate(mDstCalendar);
-                        mIsNeedInitAll = false;
-                    }
-                }
+                handleDateSelect(item);
             }
             
         });
@@ -336,6 +308,51 @@ public class DateDialogPicker extends Dialog implements android.view.View.OnClic
         dismiss();
     }
     
+
+
+    /**   
+     * @description
+     * @date 2015年7月31日
+     * @param item
+     */
+    private void handleDateSelect(String item) {
+        // 8月20日 星期几
+        int mounthIndex = item.indexOf("月");
+        int dateIndex = item.indexOf("日");
+        int realMouth = Integer.valueOf(item.substring(0, mounthIndex));
+        int realDate = Integer.valueOf(item.substring(mounthIndex + 1, dateIndex));
+        if (mCurCalendar.get(Calendar.MONTH) > realMouth) {
+            mDstCalendar.add(Calendar.YEAR, 1);
+        }
+        mDstCalendar.set(Calendar.MONTH, realMouth - 1);
+        mDstCalendar.set(Calendar.DAY_OF_MONTH, realDate);
+        if (realMouth == mMinCalendar.get(Calendar.MONTH) + 1 && realDate == mMinCalendar.get(Calendar.DAY_OF_MONTH)) {
+            initHourDate(mMinCalendar.get(Calendar.HOUR_OF_DAY));
+            if (mDstCalendar.get(Calendar.HOUR_OF_DAY) > mMinCalendar.get(Calendar.HOUR_OF_DAY)) {
+                initMinuteDate(0);
+            }
+            else {
+                initMinuteDate(mMinCalendar.get(Calendar.MINUTE));
+            }
+            restoreSelectDate(mDstCalendar);
+            mIsNeedInitAll = true;
+            mIsCurMinDate = true;
+        }
+        else {
+            mIsCurMinDate = false;
+            if (mIsNeedInitAll) {
+                // 初始化时间
+                initHourDate(0);
+                // 初始化分钟
+                initMinuteDate(0);
+                restoreSelectDate(mDstCalendar);
+                mIsNeedInitAll = false;
+            }
+        }
+    }
+
+
+
     /**
      * @项目名称：DateScrollPicker
      * @类名称：OnDateSelectListener
