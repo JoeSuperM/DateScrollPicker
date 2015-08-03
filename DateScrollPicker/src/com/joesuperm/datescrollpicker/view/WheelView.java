@@ -2,7 +2,7 @@ package com.joesuperm.datescrollpicker.view;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.joesuperm.datescrollpicker.utils.DeviceUitls;
 
 /**
@@ -334,7 +335,6 @@ public class WheelView extends ScrollView {
         super.fling(velocityY / 3);
     }
     
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
