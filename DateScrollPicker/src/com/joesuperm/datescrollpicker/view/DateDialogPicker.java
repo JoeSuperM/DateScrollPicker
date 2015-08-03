@@ -105,22 +105,24 @@ public class DateDialogPicker extends Dialog implements android.view.View.OnClic
     /**
      * @description 初始化基本日期对象和监听器
      * @date 2015年7月31日
-     * @param curCalendar
+     * @param selectCalendar
      *            当前需要选中的日期对象
      * @param minCalendar
      *            最小日期对象，即可选择日期不能小于改对象
      * @param listener
      *            日期选中监听器
      */
-    public void setCalendar(Calendar curCalendar, Calendar minCalendar, OnDateSelectListener listener) {
-        this.mSourceCalendar = curCalendar;
-        if (curCalendar.getTimeInMillis() < minCalendar.getTimeInMillis()) {
-            this.mMinCalendar = curCalendar;
+    public void setCalendar(Calendar selectCalendar, Calendar minCalendar, OnDateSelectListener listener) {
+        this.mSourceCalendar = Calendar.getInstance();
+        this.mSourceCalendar.setTime(selectCalendar.getTime());
+        if (selectCalendar.getTimeInMillis() < minCalendar.getTimeInMillis()) {
+            this.mMinCalendar = Calendar.getInstance();
+            this.mMinCalendar.setTime(selectCalendar.getTime());
         }
         else {
             this.mMinCalendar = minCalendar;
         }
-        this.mDstCalendar = curCalendar;
+        this.mDstCalendar = selectCalendar;
         this.mDateSelectListener = listener;
     }
     
@@ -147,11 +149,11 @@ public class DateDialogPicker extends Dialog implements android.view.View.OnClic
         }
         mWvDate.setItems(mDateList);
         setListener();
-        if (mSourceCalendar.get(Calendar.MONTH) == mMinCalendar.get(Calendar.MONTH)  && mSourceCalendar.get(Calendar.DAY_OF_MONTH) == mMinCalendar.get(Calendar.DAY_OF_MONTH)) {
-            System.out.println("============");
-            handleDateSelect(mDateList.get(0));
+        if(mDateList.get(0).equals(getDate(mSourceCalendar))){
+            handleDateSelect(mDateList.get(0));            
+        }else{
+            restoreSelectDate(mSourceCalendar);
         }
-        restoreSelectDate(mSourceCalendar);
     }
     
     /**
